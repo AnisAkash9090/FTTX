@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.custom-input {
+    border: 2px solid gold !important;
+    border-radius: 50px !important;
+}

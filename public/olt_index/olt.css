@@ -1,0 +1,46 @@
+   /* -------------------- YOUR EXACT CSS -------------------- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        :root {
+            --base-color: #e0e5ec;
+            --shadow-dark: #a3b1c6; 
+            --shadow-light: #ffffff;
+            --accent-color: #40a9c3;
+            --text-dark: #333;
+        }
+        body {
+            background: linear-gradient(135deg, #e8eaec, #d8dbe0); 
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; background-repeat: no-repeat; background-attachment: fixed;
+        }
+        .login-container {
+            background: var(--base-color);
+            border-radius: 25px; padding: 50px 40px;
+            width: 360px; text-align: center;
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+        }
+        .profile-img {
+            width: 90px; height: 90px; margin: 0 auto 25px;
+            border-radius: 50%; background: var(--base-color);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+            overflow: hidden;
+        }
+        .wrapper { display: grid; place-content: center; margin-bottom: 5px; font-family: "Oswald", sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; }
+        .wrapper > div { grid-area: 1/1/-1/-1; }
+        .top { clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 58%); color: var(--accent-color); font-size: 18px; }
+        .bottom { clip-path: polygon(0% 60%, 100% 50%, 100% 100%, 0% 100%); color: transparent; font-size: 18px; background: linear-gradient(177deg, var(--text-dark) 53%, var(--accent-color) 65%); background-clip: text; -webkit-background-clip: text; }
+        .input-field { position: relative; margin-bottom: 20px; }
+        .input-field input {
+            width: 100%; padding: 15px 50px 15px 45px; border: none; border-radius: 20px;
+            background: var(--base-color); box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            font-size: 0.95rem; color: var(--text-dark); outline: none;
+        }
+        .input-field input:focus { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+        .input-field i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666; font-size: 1.1rem; }
+        .btn {
+            width: 100%; padding: 15px; border: none; border-radius: 25px;
+            background: var(--accent-color); color: var(--shadow-light);
+            font-size: 1.05rem; font-weight: 600; cursor: pointer;
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            transition: all 0.2s ease;
+        }
+        .error-msg { color: #e3342f; font-size: 0.8rem; margin-top: 5px; text-align: left; padding-left: 10px; }

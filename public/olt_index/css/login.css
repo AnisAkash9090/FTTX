@@ -1,0 +1,258 @@
+ :root {
+            --bg-base: #030712;
+            --surface: rgba(17, 24, 39, 0.75);
+            --border: rgba(31, 41, 55, 0.8);
+            --border-glow: rgba(59, 130, 246, 0.5);
+            
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --danger: #ef4444;
+            
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== Network Node Animation Canvas ===== */
+        #network-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Ambient Glow Highlights */
+        .ambient-light {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
+            z-index: 2;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* ===== Main Container ===== */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 24px;
+        }
+
+        .login-card {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                        0 0 30px rgba(59, 130, 246, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        .login-card:hover {
+            border-color: var(--border-glow);
+        }
+
+        /* ===== Network Branding Header ===== */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .terminal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--cyan);
+            margin-bottom: 16px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+            animation: pulse-ping 1.5s infinite;
+        }
+
+        @keyframes pulse-ping {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .brand-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .brand-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== Input Fields ===== */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-control {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-control i.field-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .input-control input {
+            width: 100%;
+            background: rgba(3, 7, 18, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px 12px 42px;
+            font-size: 14px;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-control input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+            background: rgba(3, 7, 18, 0.85);
+        }
+
+        .input-control input:focus + i.field-icon {
+            color: var(--primary);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toggle-password:hover { color: var(--text-main); }
+
+        /* Error States */
+        .error-field input { border-color: var(--danger); }
+        .error-msg {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== Submit Button ===== */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 14px var(--primary-glow);
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+            filter: brightness(1.08);
+        }
+
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ===== Footer Diagnostic Telemetry ===== */
+        .system-status {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .latency-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ping-time { color: var(--emerald); }
