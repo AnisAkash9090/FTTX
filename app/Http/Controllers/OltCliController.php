@@ -79,7 +79,7 @@ class OltCliController extends Controller
             ]);
 
             // Broadcast connection success
-            broadcast(new OltCliOutput($sessionId, 'connected', "Connected to {$olt->olt_name} via " . strtoupper($protocol)))->toOthers();
+            broadcast(new OltCliOutput($sessionId, 'connected', "Connected to {$olt->olt_name} via " . strtoupper($protocol)));
 
             return response()->json([
                 'status'     => 'success',
@@ -130,7 +130,7 @@ class OltCliController extends Controller
 
             // Security check
             if ($this->isCommandBlocked($command)) {
-                broadcast(new OltCliOutput($sessionId, 'error', '❌ Command blocked for security reasons'))->toOthers();
+                broadcast(new OltCliOutput($sessionId, 'error', '❌ Command blocked for security reasons'));
                 return response()->json([
                     'status'  => 'error',
                     'message' => 'Command blocked for security',
@@ -138,7 +138,7 @@ class OltCliController extends Controller
             }
 
             // Echo command
-            broadcast(new OltCliOutput($sessionId, 'echo', $command))->toOthers();
+            broadcast(new OltCliOutput($sessionId, 'echo', $command));
 
             // Execute
             $output = '';
@@ -162,17 +162,19 @@ class OltCliController extends Controller
                 );
             }
 
-            // Broadcast output
-broadcast(new OltCliOutput($sessionId, 'output', $output));
+            // Return bulk command output through HTTP; Reverb has a message-size limit.
             // Keep session alive
             $session['last_activity'] = now();
             Cache::put('olt_cli_session_' . $sessionId, $session, now()->addHours(2));
 
-            return response()->json(['status' => 'success']);
+            return response()->json([
+                'status' => 'success',
+                'output' => $output,
+            ]);
 
         } catch (\Throwable $e) {
             Log::error('CLI Command error: ' . $e->getMessage());
-            broadcast(new OltCliOutput($sessionId ?? '', 'error', '❌ Error: ' . $e->getMessage()))->toOthers();
+            broadcast(new OltCliOutput($sessionId ?? '', 'error', '❌ Error: ' . $e->getMessage()));
             return response()->json([
                 'status'  => 'error',
                 'message' => $e->getMessage(),
@@ -191,7 +193,7 @@ broadcast(new OltCliOutput($sessionId, 'output', $output));
             $sessionId = $validated['session_id'];
 
             Cache::forget('olt_cli_session_' . $sessionId);
-            broadcast(new OltCliOutput($sessionId, 'disconnected', 'Session closed.'))->toOthers();
+            broadcast(new OltCliOutput($sessionId, 'disconnected', 'Session closed.'));
 
             Log::info('CLI Session disconnected', ['session_id' => $sessionId]);
 
@@ -231,17 +233,14 @@ broadcast(new OltCliOutput($sessionId, 'output', $output));
 
         // Try enable mode
         $ssh->write("enable\n");
-        sleep(1);
         $buf = $ssh->read();
         if (str_contains($buf, ':') || str_contains(strtolower($buf), 'password')) {
             $ssh->write($pass . "\n");
-            sleep(1);
             $ssh->read();
         }
 
         // Disable paging
         $ssh->write("terminal length 0\n");
-        sleep(1);
         $ssh->read();
 
         // Send command
@@ -343,7 +342,6 @@ broadcast(new OltCliOutput($sessionId, 'output', $output));
         // === ENABLE MODE (if not already) ===
         if (strpos($afterLogin, '#') === false) {
             fwrite($fp, "enable\r\n");
-            sleep(1);
             $checkEnable = $this->telnetRead($fp, 2);
 
             if (str_contains($checkEnable, ':')) {

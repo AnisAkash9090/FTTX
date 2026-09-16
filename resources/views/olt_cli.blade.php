@@ -1,17 +1,21 @@
 <x-app-layout>
 
-<div class="container-fluid mt-4">
+<div class="container-fluid olt-cli-page mt-4">
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- HEADER -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
 
-    <div class="row mb-3">
+    <div class="row mb-4 cli-hero">
         <div class="col-12">
-            <h2 class="mb-0">
-                <i class="fas fa-terminal"></i> OLT CLI Terminal
-            </h2>
-            <small class="text-muted">Execute commands on OLT devices via SSH/Telnet</small>
+            <div class="cli-kicker"><span></span> NETWORK OPERATIONS / LIVE CONSOLE</div>
+            <div class="d-flex flex-wrap align-items-end justify-content-between gap-3">
+                <div>
+                    <h2 class="mb-1"><i class="fas fa-terminal"></i> OLT CLI Terminal</h2>
+                    <p class="cli-subtitle mb-0">Interactive command channel for remote optical line terminals</p>
+                </div>
+                <div class="cli-hero-readout"><strong id="heroConnectionState">STANDBY</strong><small>SESSION STATUS</small></div>
+            </div>
         </div>
     </div>
 
@@ -21,22 +25,22 @@
 
     <div class="row">
         <!-- LEFT: OLT Selection & Connection -->
-        <div class="col-md-3 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
+        <div class="col-xl-3 col-lg-4 mb-4">
+            <div class="card shadow-sm cli-control-panel">
+                <div class="card-header">
                     <h6 class="mb-0">
-                        <i class="fas fa-plug"></i> Connection
+                        <span class="panel-index">01</span> CONNECTION
                     </h6>
                 </div>
                 <div class="card-body">
                     <!-- Status Indicator -->
-                    <div class="alert alert-secondary mb-3" id="statusAlert">
-                        <i class="fas fa-circle text-warning"></i> Disconnected
+                    <div class="alert alert-secondary mb-4" id="statusAlert">
+                        <i class="fas fa-circle text-warning"></i> <span>Disconnected</span>
                     </div>
 
                     <!-- OLT Selection -->
                     <div class="mb-3">
-                        <label class="form-label">Select OLT</label>
+                        <label class="form-label"><span>01</span> TARGET DEVICE</label>
                         <select class="form-control" id="oltSelect">
                             <option value="">-- Choose OLT --</option>
                             @foreach($oltConfigs as $olt)
@@ -51,7 +55,7 @@
 
                     <!-- Connection Type -->
                     <div class="mb-3">
-                        <label class="form-label">Protocol</label>
+                        <label class="form-label"><span>02</span> TRANSPORT</label>
                         <select class="form-control" id="protocolSelect">
                             <option value="ssh">SSH (Port 22)</option>
                             <option value="telnet">Telnet (Port 23)</option>
@@ -59,54 +63,54 @@
                     </div>
 
                     <!-- Connect Button -->
-                    <button class="btn btn-success w-100 mb-2" id="connectBtn">
-                        <i class="fas fa-link"></i> Connect
+                    <button class="btn btn-success w-100 mb-2 cli-connect-btn" id="connectBtn">
+                        <i class="fas fa-power-off"></i> Initialize Link
                     </button>
 
                     <!-- Disconnect Button (Hidden) -->
-                    <button class="btn btn-danger w-100 mb-3" id="disconnectBtn" style="display: none;">
-                        <i class="fas fa-unlink"></i> Disconnect
+                    <button class="btn btn-danger w-100 mb-3 cli-connect-btn" id="disconnectBtn" style="display: none;">
+                        <i class="fas fa-power-off"></i> Close Session
                     </button>
 
                     <hr>
 
                     <!-- Session Info -->
-                    <div id="sessionInfo" style="display: none;">
+                    <div id="sessionInfo" class="session-info" style="display: none;">
                         <small class="text-muted">
-                            <strong>Session ID:</strong><br>
+                            <strong>SESSION ID</strong><br>
                             <code id="sessionId" style="font-size: 10px;"></code>
                         </small>
                         <hr>
                         <small class="text-muted">
-                            <strong>Connected OLT:</strong><br>
+                            <strong>CONNECTED DEVICE</strong><br>
                             <span id="connectedOlt"></span>
                         </small>
                     </div>
 
                     <!-- History -->
-                    <div class="mt-4">
-                        <label class="form-label">Command History</label>
+                    <div class="mt-4 command-history-panel">
+                        <label class="form-label"><span>03</span> COMMAND ARCHIVE</label>
                         <div id="historyList" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 8px;">
                             <small class="text-muted">No history</small>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary mt-2 w-100" id="clearHistoryBtn">Clear History</button>
+                        <button class="btn btn-sm btn-outline-secondary mt-2 w-100" id="clearHistoryBtn"><i class="fas fa-eraser"></i> Clear Archive</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- RIGHT: Terminal -->
-        <div class="col-md-9 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h6 class="mb-0">
-                        <i class="fas fa-monitor"></i> Terminal
-                    </h6>
+        <div class="col-xl-9 col-lg-8 mb-4">
+            <div class="card shadow-sm cli-terminal-panel">
+                <div class="card-header terminal-toolbar">
+                    <div class="terminal-title"><span class="panel-index">02</span><i class="fas fa-wave-square"></i> LIVE COMMAND STREAM</div>
+                    <div class="terminal-lights"><span></span><span></span><span></span></div>
+                    <div class="terminal-mode">MATRIX / UTF-8</div>
                 </div>
-                <div class="card-body p-0" style="background: #1e1e1e; min-height: 500px; display: flex; flex-direction: column;">
+                <div class="card-body p-0 terminal-frame">
 
                     <!-- Terminal Output -->
-                    <div id="terminalOutput" style="
+                    <div id="terminalOutput" class="terminal-output-area" style="
                         flex: 1;
                         overflow-y: auto;
                         padding: 15px;
@@ -117,21 +121,22 @@
                         word-wrap: break-word;
                         line-height: 1.5;
                     ">
-                        <span style="color: #888;">Welcome to OLT CLI Terminal</span><br>
-                        <span style="color: #888;">Select an OLT and click Connect to start</span><br>
+                        <span class="terminal-welcome">SYSTEM READY // SELECT A TARGET TO OPEN THE COMMAND CHANNEL</span><br>
+                        <span class="terminal-muted">Awaiting authenticated transport...</span><br>
                     </div>
 
                     <!-- Input Area -->
-                    <div style="border-top: 1px solid #444; padding: 15px; background: #0a0a0a;">
+                    <div class="terminal-input-dock">
+                        <div class="input-label"><span class="prompt-caret">›</span> COMMAND INPUT <span class="input-hint">ENTER TO EXECUTE</span></div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control"
                                    id="commandInput"
-                                   placeholder="Enter command (e.g., show running-config)..."
+                                   placeholder="show running-config"
                                    disabled
                                    style="background: #1e1e1e; color: #0f0; border: 1px solid #444; font-family: monospace;">
                             <button class="btn btn-success" id="sendBtn" disabled>
-                                <i class="fas fa-paper-plane"></i> Send
+                                <i class="fas fa-arrow-up"></i> Execute
                             </button>
                         </div>
                         <small class="text-muted mt-2 d-block">
@@ -149,6 +154,106 @@
 <!-- ═══════════════════════════════════════════════════════════════════ -->
 
 <style>
+    .olt-cli-page {
+        --cli-bg: #07100d;
+        --cli-panel: #0c1713;
+        --cli-panel-2: #101e18;
+        --cli-line: rgba(111, 255, 151, 0.18);
+        --cli-green: #71ff9a;
+        --cli-green-dim: #3fbf72;
+        --cli-ink: #d9ffe2;
+        color: var(--cli-ink);
+    }
+
+    .cli-hero {
+        border-bottom: 1px solid var(--cli-line);
+        padding-bottom: 18px;
+    }
+
+    .cli-kicker, .terminal-mode, .input-label, .form-label, .panel-index,
+    .cli-hero-readout small {
+        color: var(--cli-green-dim);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+    }
+
+    .cli-kicker span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 7px;
+        border-radius: 50%;
+        background: var(--cli-green);
+        box-shadow: 0 0 12px var(--cli-green);
+    }
+
+    .cli-hero h2 { color: #10291c; font-weight: 800; letter-spacing: -0.02em; }
+    .cli-subtitle { color: #547262; font-size: 13px; }
+    .cli-hero-readout { text-align: right; }
+    .cli-hero-readout strong { display: block; color: var(--cli-green-dim); font: 700 20px/1 monospace; }
+    .cli-hero-readout small { display: block; margin-top: 5px; }
+
+    .cli-control-panel, .cli-terminal-panel {
+        overflow: hidden;
+        border: 1px solid var(--cli-line) !important;
+        border-radius: 10px !important;
+        background: var(--cli-panel) !important;
+        box-shadow: 0 18px 45px rgba(0, 20, 10, 0.16) !important;
+    }
+
+    .cli-control-panel .card-header, .cli-terminal-panel .card-header {
+        background: var(--cli-panel-2) !important;
+        border-bottom: 1px solid var(--cli-line) !important;
+        color: var(--cli-ink) !important;
+    }
+
+    .cli-control-panel .card-body { padding: 20px !important; }
+    .panel-index { margin-right: 10px; color: var(--cli-green); }
+    .form-label { color: #83b593; }
+    .form-label span { color: var(--cli-green); margin-right: 6px; }
+    .olt-cli-page select, .olt-cli-page #commandInput {
+        border: 1px solid var(--cli-line) !important;
+        border-radius: 5px !important;
+        background: #07110d !important;
+        color: var(--cli-ink) !important;
+        box-shadow: none !important;
+    }
+    .olt-cli-page select:focus, .olt-cli-page #commandInput:focus {
+        border-color: var(--cli-green) !important;
+        box-shadow: 0 0 0 2px rgba(113, 255, 154, 0.12) !important;
+    }
+    .cli-control-panel .alert { border: 1px solid var(--cli-line); background: rgba(113, 255, 154, 0.06); color: #a8dcb5; }
+    .cli-connect-btn { border: 0; border-radius: 5px; padding: 11px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .cli-connect-btn.btn-success { background: var(--cli-green); color: #06120a; }
+    .session-info { padding: 12px; border: 1px dashed var(--cli-line); background: rgba(0, 0, 0, 0.14); }
+    .session-info strong { color: #70a982; font-size: 10px; letter-spacing: 0.1em; }
+    .session-info code, .session-info span { color: var(--cli-green); }
+    .command-history-panel .form-label { display: block; }
+    #historyList { border-color: var(--cli-line) !important; background: #07110d !important; }
+    #historyList .history-item { background: #0d1d15; color: #a8dcb5; border-left-color: var(--cli-green-dim); }
+    #historyList .history-item:hover { background: #153222; }
+    #clearHistoryBtn { border-color: var(--cli-line); color: #80b791; }
+
+    .terminal-toolbar { display: flex; align-items: center; gap: 14px; min-height: 55px; }
+    .terminal-title { flex: 1; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; }
+    .terminal-title i { margin-right: 8px; color: var(--cli-green); }
+    .terminal-lights { display: flex; gap: 5px; }
+    .terminal-lights span { width: 7px; height: 7px; border-radius: 50%; background: #345543; }
+    .terminal-lights span:first-child { background: var(--cli-green); box-shadow: 0 0 8px var(--cli-green); }
+    .terminal-frame { min-height: 600px; display: flex; flex-direction: column; background: var(--cli-bg) !important; }
+    .terminal-output-area { position: relative; flex: 1; min-height: 400px; background-color: var(--cli-bg) !important; background-image: linear-gradient(rgba(113,255,154,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(113,255,154,.025) 1px, transparent 1px); background-size: 28px 28px; }
+    .terminal-output-area::before { content: '01001011 01001100 01001001'; position: absolute; right: 20px; top: 18px; color: rgba(113,255,154,.08); font: 10px monospace; letter-spacing: .18em; pointer-events: none; }
+    .terminal-welcome { color: var(--cli-green); text-shadow: 0 0 10px rgba(113,255,154,.55); }
+    .terminal-muted { color: #547262; }
+    .terminal-input-dock { border-top: 1px solid var(--cli-line); padding: 16px 18px 18px; background: #09140f; }
+    .input-label { margin-bottom: 8px; }
+    .prompt-caret { margin-right: 6px; color: var(--cli-green); font-size: 18px; }
+    .input-hint { float: right; color: #547262; font-size: 9px; }
+    .terminal-input-dock .input-group { border: 1px solid var(--cli-line); border-radius: 6px; padding: 4px; background: #06100b; }
+    .terminal-input-dock #commandInput { border: 0 !important; }
+    .terminal-input-dock #sendBtn { border: 0; border-radius: 4px; min-width: 112px; background: var(--cli-green); color: #06120a; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+
     #terminalOutput {
         font-size: 13px !important;
         line-height: 1.6 !important;
@@ -173,6 +278,31 @@
 
     .terminal-echo {
         color: #88ff88;
+    }
+
+    .terminal-output {
+        position: relative;
+        color: #b7ffbd;
+        text-shadow: 0 0 6px rgba(68, 255, 68, 0.45);
+    }
+
+    .terminal-output-area .terminal-output::after { left: 0; right: auto; width: 100%; }
+
+    .terminal-output::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(110, 255, 130, 0.3);
+        box-shadow: 0 0 8px rgba(110, 255, 130, 0.5);
+        animation: terminal-scan 1.8s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes terminal-scan {
+        from { top: 0; }
+        to { top: 100%; }
     }
 
     .card {
@@ -240,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sessionInfo = document.getElementById('sessionInfo');
     const historyList = document.getElementById('historyList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const heroConnectionState = document.getElementById('heroConnectionState');
 
     let sessionId = null;
     let isConnected = false;
@@ -264,6 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'X-Socket-ID': window.Echo?.socketId?.() || '',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -277,6 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.status === 'success') {
                 sessionId = data.session_id;
                 isConnected = true;
+                heroConnectionState.textContent = 'ONLINE';
+                heroConnectionState.style.color = '#71ff9a';
 
                 // Update UI
                 connectBtn.style.display = 'none';
@@ -321,6 +455,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'X-Socket-ID': getEchoSocketId(),
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ session_id: sessionId })
@@ -329,6 +464,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset UI
             isConnected = false;
             sessionId = null;
+            heroConnectionState.textContent = 'STANDBY';
+            heroConnectionState.style.color = '';
             disconnectBtn.style.display = 'none';
             connectBtn.style.display = 'block';
             commandInput.disabled = true;
@@ -401,7 +538,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const data = await response.json();
 
-            if (data.status !== 'success') {
+            if (data.status === 'success' && data.output) {
+                handleOutput('output', data.output);
+            } else if (data.status !== 'success') {
                 terminal('error', 'Error: ' + data.message);
             }
         } catch (err) {
@@ -410,6 +549,16 @@ document.addEventListener('DOMContentLoaded', function() {
             sendBtn.disabled = false;
             commandInput.disabled = false;
             commandInput.focus();
+        }
+    }
+
+    function getEchoSocketId() {
+        try {
+            return typeof window.Echo?.socketId === 'function'
+                ? window.Echo.socketId() || ''
+                : window.Echo?.connector?.pusher?.connection?.socket_id || '';
+        } catch (error) {
+            return '';
         }
     }
 
@@ -463,6 +612,12 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (type === 'echo') {
             line.className = 'terminal-echo';
             line.textContent = message;
+        } else if (type === 'output') {
+            line.className = 'terminal-output';
+            terminalOutput.appendChild(line);
+            revealMatrixText(line, String(message ?? ''));
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            return;
         } else {
             line.style.color = '#0f0';
             line.textContent = message;
@@ -470,6 +625,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         terminalOutput.appendChild(line);
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function revealMatrixText(element, message) {
+        const matrixChars = '01アイウエオカキクケコサシスセソ<>[]{}#$%';
+        const revealLength = Math.min(message.length, 12000);
+        let position = 0;
+
+        const reveal = () => {
+            const visible = message.slice(0, position);
+            const noise = Array.from({ length: Math.min(18, revealLength - position) }, () =>
+                matrixChars[Math.floor(Math.random() * matrixChars.length)]
+            ).join('');
+
+            element.textContent = visible + noise;
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+            if (position < revealLength) {
+                position += 4;
+                window.setTimeout(reveal, 12);
+                return;
+            }
+
+            element.textContent = message;
+        };
+
+        reveal();
     }
 
     // ═══════════════════════════════════════════════════════════════════
@@ -506,15 +687,17 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Laravel Echo for WebSocket (Reverb) -->
-<script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.14.0/dist/echo.iife.js"></script>
+<script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.5.0/dist/echo.iife.js"></script>
 <script>
-    window.Echo = new Echo({
+    window.Pusher = Pusher;
+    window.Echo = new Echo.default({
         broadcaster: 'reverb',
         key: '{{ config("broadcasting.connections.reverb.key") }}',
-        wsHost: '{{ config("broadcasting.connections.reverb.options.host") }}',
-        wsPort: '{{ config("broadcasting.connections.reverb.options.port") }}',
-        wssPort: '{{ config("broadcasting.connections.reverb.options.port") }}',
-        scheme: '{{ config("broadcasting.connections.reverb.options.scheme") }}',
+        wsHost: '{{ env("VITE_REVERB_HOST", config("broadcasting.connections.reverb.options.host")) }}',
+        wsPort: '{{ env("VITE_REVERB_PORT", config("broadcasting.connections.reverb.options.port")) }}',
+        wssPort: '{{ env("VITE_REVERB_PORT", config("broadcasting.connections.reverb.options.port")) }}',
+        scheme: '{{ env("VITE_REVERB_SCHEME", config("broadcasting.connections.reverb.options.scheme")) }}',
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
     });

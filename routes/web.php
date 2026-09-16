@@ -9,6 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\OltConnectionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OltCliController;
+use App\Http\Controllers\ServerHealthController;
 // Change this route to redirect to login
 Route::get('/', function () {
     return redirect()->route('login');
@@ -55,16 +56,6 @@ Route::match(['get', 'post'], '/olt-search', [OltInformationController::class, '
 
 // AJAX Endpoint for fetching structured unique PON ports
 Route::get('/ajax/olt-ports', [OltInformationController::class, 'getUniquePorts'])->name('ajax.olt.ports');
-/**
- * ========== routes/channels.php ==========
- */
-Broadcast::channel('olt-cli.{sessionId}', function ($user, $sessionId) {
-    $session = Cache::get('olt_cli_session_' . $sessionId);
-
-    return $session
-        && isset($session['user_id'])
-        && (int) $session['user_id'] === (int) $user->id;
-});
 // Add this line for your OLT Devices
 /* Route::get('/olts', function () {
     return view('olts.index'); // Make sure this view exists later!
@@ -74,6 +65,12 @@ Broadcast::channel('olt-cli.{sessionId}', function ($user, $sessionId) {
     Route::post('/roles/store', [PermissionController::class, 'storeRole'])->name('roles.store');
     Route::put('/roles/update/{id}', [PermissionController::class, 'updateRole'])->name('roles.update');
     Route::delete('/roles/delete/{id}', [PermissionController::class, 'deleteRole'])->name('roles.delete');
+
+// View route matching your sidebar link
+Route::get('/server-health', [ServerHealthController::class, 'index'])->name('serverHealth');
+
+// AJAX route for the live chart data
+Route::get('/server-health/metrics', [ServerHealthController::class, 'getLiveMetrics'])->name('serverHealth.metrics');
 
     // --- User Permission Assignment Routes ---
     Route::get('/assign-permissions', [PermissionController::class, 'indexAssignPermission'])->name('permissions.assign.index');

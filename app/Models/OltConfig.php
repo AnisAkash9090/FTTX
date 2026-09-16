@@ -22,7 +22,11 @@ class OltConfig extends Model
         'createinfo',
         'txrxcmd',
         'typeconnection',
-        'port'
+        'port',
+        'snmpsts',
+        'sshTElnetsts',
+        'details_snmp',
+        'details_sshtelnet'
     ];
 
     // Relationship with OltInformation table

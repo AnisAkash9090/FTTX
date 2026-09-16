@@ -60,7 +60,7 @@
 <div class="row mb-4">
     <!-- Total Active OLTs -->
     <div class="col-md-3">
-        <div class="card bg-primary text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal" onclick="filterOltTable('all')">
+        <div class="card bg-primary text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal2" onclick="filterOltTable('all')">
             <div class="card-body">
                 <h5 class="card-title">Total Active OLTs</h5>
                 <h2 class="mb-0">{{ count($oltOnuSummaries) }}</h2>
@@ -72,7 +72,7 @@
     <!-- Healthy OLTs (Both OK) -->
  <!-- Healthy OLTs (Strict check: BOTH must be 'success') -->
 <div class="col-md-3">
-    <div class="card bg-success text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal" onclick="filterOltTable('healthy')">
+    <div class="card bg-success text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal2" onclick="filterOltTable('healthy')">
         <div class="card-body">
             <h5 class="card-title">Healthy OLTs</h5>
             <h2 class="mb-0">
@@ -85,7 +85,7 @@
 
     <!-- Warnings (Store Failed) -->
     <div class="col-md-3">
-        <div class="card bg-warning text-dark cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal" onclick="filterOltTable('warning')">
+        <div class="card bg-warning text-dark cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal2" onclick="filterOltTable('warning')">
             <div class="card-body">
                 <h5 class="card-title">Warnings</h5>
                 <h2 class="mb-0">
@@ -98,7 +98,7 @@
 
     <!-- Critical Failures -->
     <div class="col-md-3">
-        <div class="card bg-danger text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal" onclick="filterOltTable('danger')">
+        <div class="card bg-danger text-white cursor-pointer" data-toggle="modal" data-target="#oltSummaryModal2" onclick="filterOltTable('danger')">
             <div class="card-body">
                 <h5 class="card-title">Failed Connections</h5>
                 <h2 class="mb-0">
@@ -133,7 +133,7 @@
 }
 </style>
 <!-- Bootstrap 4 OLT Summary Modal -->
-<div class="modal fade" id="oltSummaryModal" tabindex="-1" role="dialog" aria-labelledby="oltSummaryModalLabel" aria-hidden="true">
+<div class="modal fade" id="oltSummaryModal2" tabindex="-1" role="dialog" aria-labelledby="oltSummaryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document" style="max-width: 95%!important;">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
@@ -183,7 +183,7 @@
             </th>
         </tr>
     </thead>
-  <tbody>
+<tbody>
     @forelse($oltOnuSummaries as $olt)
         <tr class="olt-row" 
             data-snmp="{{ $olt->snmp_alert }}" 
@@ -194,9 +194,12 @@
                 <strong>#{{ $olt->id }}</strong>
             </td>
 
-            <!-- 2. OLT Name -->
+            <!-- 2. OLT Name & Details -->
             <td>
-                <strong>{{ $olt->olt_name }}</strong>
+                <strong class="d-block">{{ $olt->olt_name }}</strong>
+                <small class="text-muted">
+                    {{ $olt->olt_brand }} &bull; {{ $olt->type }} &bull; <span class="text-primary">{{ $olt->typeconnection }}</span>
+                </small>
             </td>
 
             <!-- 3. SNMP Status Alert -->

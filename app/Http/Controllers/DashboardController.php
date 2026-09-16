@@ -60,6 +60,9 @@ class DashboardController extends Controller
             'olt.sshTElnetsts',
             'olt.details_snmp',
             'olt.details_sshtelnet',
+            'olt.olt_brand',
+            'olt.type',
+            'olt.typeconnection',
             DB::raw('COUNT(onu.id) as total_onu'),
             DB::raw("SUM(
                 CASE 
@@ -75,7 +78,10 @@ class DashboardController extends Controller
             'olt.snmpsts',
             'olt.sshTElnetsts',
             'olt.details_snmp',
-            'olt.details_sshtelnet'
+            'olt.details_sshtelnet',
+            'olt.olt_brand',
+            'olt.type',
+            'olt.typeconnection'
         )
         ->get()
       ->map(function ($item) {
