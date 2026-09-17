@@ -7,12 +7,14 @@
             <span>Dashboard Panel</span>
         </a>
     </li>
+     @can('has-permission', '1,13')
     <li>
         <a href="{{route('serverHealth')  }}">
             <i class="fa fa-dashboard yellow_color"></i>
             <span>Server Health</span>
         </a>
     </li>
+    @endcan
     <!-- OLT Panel -->
  @can('has-permission', '1,2,3,4,10,15')
         <li>

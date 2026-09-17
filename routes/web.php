@@ -66,11 +66,11 @@ Route::get('/ajax/olt-ports', [OltInformationController::class, 'getUniquePorts'
     Route::put('/roles/update/{id}', [PermissionController::class, 'updateRole'])->name('roles.update');
     Route::delete('/roles/delete/{id}', [PermissionController::class, 'deleteRole'])->name('roles.delete');
 
-// View route matching your sidebar link
-Route::get('/server-health', [ServerHealthController::class, 'index'])->name('serverHealth');
+    // View route matching your sidebar link
+    Route::get('/server-health', [ServerHealthController::class, 'index'])->name('serverHealth');
 
-// AJAX route for the live chart data
-Route::get('/server-health/metrics', [ServerHealthController::class, 'getLiveMetrics'])->name('serverHealth.metrics');
+    // AJAX route for the live chart data
+    Route::get('/server-health/metrics', [ServerHealthController::class, 'getLiveMetrics'])->name('serverHealth.metrics');
 
     // --- User Permission Assignment Routes ---
     Route::get('/assign-permissions', [PermissionController::class, 'indexAssignPermission'])->name('permissions.assign.index');
